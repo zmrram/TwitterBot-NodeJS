@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/zmrram/TwitterBot-Node/issues"
   },
-  "homepage": "https://github.com/zmrram/TwitterBot-Node#readme"
+  "homepage": "https://github.com/zmrram/TwitterBot-Node#readme",
+  "dependencies": {
+    "twit": "^2.2.5"
+  }
 }
