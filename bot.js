@@ -1,6 +1,8 @@
 var Twit = require('twit')
 var twitAcess = require('./twitteraccess');
 var T = new Twit(twitAcess.tweetterKey);
+var wordnik = require('./wordnik');
+var giphy = require('./giphy');
 
 function searchTweet() {
     var param = {
@@ -19,19 +21,25 @@ function searchTweet() {
 };
 
 function getWordOfDay(word, note, definiton) {
-
+    console.log(word + " " + note + " " + definiton);
 }
 
-function getGif() {
-
+function getGif(url, event) {
+    var name = event.source.name;
+    var screenName = event.source.screen_name;
+    var msg = '@' + screenName + " Thanks for the follow " + url + " via @giphy";
+    tweetMsg(msg);
 }
 
 function tweetMsg(msg) {
-
+    var tweet = {
+        status: msg
+    };
+    T.post('statuses/update', tweet, function(err, data, response) {});
 }
 
 function followResponse(event) {
-    console.log(event);
+    giphy.randomWelcomeGif(getGif, event);
 }
 
 function listener() {

@@ -9,7 +9,7 @@ module.exports = {
                 var word = data.word;
                 var note = data.note;
                 var definition = data.definitions[0].text;
-                callback(word, note, definiton);
+                callback(word, note, definition);
             }
         };
         var url = "http://api.wordnik.com/v4/words.json/wordOfTheDay?date=2017-05-23&api_key=" + access.wordNikKey.api_key;
