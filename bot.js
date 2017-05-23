@@ -49,29 +49,21 @@ function listener() {
     stream.on('follow', followResponse)
 }
 
-function uploadPic() {
-    var request = require('request').defaults({ encoding: null });
-    request.get('https://www.w3schools.com/css/paris.jpg', function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-            data = new Buffer(body).toString('base64');
-            T.post('media/upload', { media_data: data }, function(err, data, response) {
-                // now we can assign alt text to the media, for use by screen readers and 
-                // other text-based presentations and interpreters 
-                var mediaIdStr = data.media_id_string
-                var altText = "Small flowers in a planter on a sunny balcony, blossoming."
-                var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+function uploadPic(imgData64) {
+    data = new Buffer(body).toString('base64');
+    T.post('media/upload', { media_data: imgData64 }, function(err, data, response) {
+        var mediaIdStr = data.media_id_string
+        var altText = "Small flowers in a planter on a sunny balcony, blossoming."
+        var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
 
-                T.post('media/metadata/create', meta_params, function(err, data, response) {
-                    if (!err) {
-                        // now we can reference the media and post a tweet (media will attach to the tweet) 
-                        var params = { status: 'loving life #nofilter', media_ids: [mediaIdStr] }
-                        T.post('statuses/update', params, function(err, data, response) {})
-                    }
-                })
-            })
-        }
+        T.post('media/metadata/create', meta_params, function(err, data, response) {
+            if (!err) {
+                var params = { status: 'loving life #nofilter', media_ids: [mediaIdStr] }
+                T.post('statuses/update', params, function(err, data, response) {})
+            }
+        });
     });
-
 }
 
-uploadPic();
+var googleimage = require('./googleimage');
+googleimage.searchImages('euphuism');
