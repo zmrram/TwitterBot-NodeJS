@@ -1,6 +1,6 @@
 var Twit = require('twit')
 var twitAcess = require('./twitteraccess');
-var T = new Twit(twitAcess);
+var T = new Twit(twitAcess.tweetterKey);
 
 function searchTweet() {
     var param = {
@@ -18,6 +18,13 @@ function searchTweet() {
     })
 };
 
+function getWordOfDay(word, note, definiton) {
+
+}
+
+function getGif() {
+
+}
 
 function tweetMsg(msg) {
 
