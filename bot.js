@@ -5,21 +5,21 @@ var wordnik = require('./wordnik');
 var giphy = require('./giphy');
 var fs = require('fs');
 
-function searchTweet() {
-    var param = {
-        q: 'donald trump',
-        count: 10
-    };
-    T.get('search/tweets', param, function(err, data, response) {
-        var statuses = data.statuses;
-        for (var i = 0; i < statuses.length; i++) {
-            console.log(statuses[i].text);
-        }
-        if (err) {
-            console.log(err);
-        }
-    })
-};
+// function searchTweet() {
+//     var param = {
+//         q: 'donald trump',
+//         count: 10
+//     };
+//     T.get('search/tweets', param, function(err, data, response) {
+//         var statuses = data.statuses;
+//         for (var i = 0; i < statuses.length; i++) {
+//             console.log(statuses[i].text);
+//         }
+//         if (err) {
+//             console.log(err);
+//         }
+//     })
+// };
 
 function tweetWordOfDay() {
     console.log("tweeting word of the day.");
