@@ -22,6 +22,7 @@ function searchTweet() {
 };
 
 function tweetWordOfDay() {
+    console.log("tweeting word of the day.");
     wordnik.worldOfTheDay(getPic);
 }
 
@@ -40,11 +41,13 @@ function getGif(url, event) {
     tweetMsg(param);
 }
 
-function tweetMsg(msg) {
+function tweetMsg(param) {
     T.post('statuses/update', param, function(err, data, response) {});
 }
 
 function followResponse(event) {
+    var name = event.source.name;
+    console.log(name + ' followed.')
     giphy.randomWelcomeGif(getGif, event);
 }
 
@@ -55,28 +58,23 @@ function listener() {
 }
 
 function tweetPic(imgData64, word, note, definiton) {
-    data = new Buffer(body).toString('base64');
     T.post('media/upload', { media_data: imgData64 }, function(err, data, response) {
-        var mediaIdStr = data.media_id_string;
+        var mediaIdStr = data.media_id_string
         var altText = note;
-        var meta_params = {
-            media_id: mediaIdStr,
-            alt_text: {
-                text: altText
-            }
-        };
+        var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
+
         T.post('media/metadata/create', meta_params, function(err, data, response) {
-            if (!err) {
-                var msg = 'Word of the day: ' + note + '\n';
-                msg += 'Definition - ' + definiton;
-                var param = {
-                    status: msg,
-                    media_ids: [mediaIdStr]
-                };
-                tweetMsg(param);
+            var msg = "#WordOfTheDay " + word.toUpperCase() + "\n";
+            if (msg.length + definiton.length < 140) {
+                msg += definiton;
             }
-        });
+            if (!err) {
+                var params = { status: msg, media_ids: [mediaIdStr] }
+                tweetMsg(params);
+            }
+        })
     });
 }
 
-tweetWordOfDay();
+listener();
+setInterval(tweetWordOfDay, 3600000 * 24);
