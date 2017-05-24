@@ -21,22 +21,27 @@ function searchTweet() {
     })
 };
 
-function getWordOfDay(word, note, definiton) {
-    console.log(word + " " + note + " " + definiton);
+function tweetWordOfDay() {
+    wordnik.worldOfTheDay(getPic);
+}
+
+function getPic(word, note, definiton) {
+    var googleimage = require('./googleimage');
+    googleimage.searchImages(word, note, definiton, tweetPic);
 }
 
 function getGif(url, event) {
     var name = event.source.name;
     var screenName = event.source.screen_name;
     var msg = '@' + screenName + " Thanks for the follow " + url + " via @giphy";
-    tweetMsg(msg);
+    var param = {
+        status: msg
+    };
+    tweetMsg(param);
 }
 
 function tweetMsg(msg) {
-    var tweet = {
-        status: msg
-    };
-    T.post('statuses/update', tweet, function(err, data, response) {});
+    T.post('statuses/update', param, function(err, data, response) {});
 }
 
 function followResponse(event) {
@@ -49,21 +54,29 @@ function listener() {
     stream.on('follow', followResponse)
 }
 
-function uploadPic(imgData64) {
+function tweetPic(imgData64, word, note, definiton) {
     data = new Buffer(body).toString('base64');
     T.post('media/upload', { media_data: imgData64 }, function(err, data, response) {
-        var mediaIdStr = data.media_id_string
-        var altText = "Small flowers in a planter on a sunny balcony, blossoming."
-        var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
-
+        var mediaIdStr = data.media_id_string;
+        var altText = note;
+        var meta_params = {
+            media_id: mediaIdStr,
+            alt_text: {
+                text: altText
+            }
+        };
         T.post('media/metadata/create', meta_params, function(err, data, response) {
             if (!err) {
-                var params = { status: 'loving life #nofilter', media_ids: [mediaIdStr] }
-                T.post('statuses/update', params, function(err, data, response) {})
+                var msg = 'Word of the day: ' + note + '\n';
+                msg += 'Definition - ' + definiton;
+                var param = {
+                    status: msg,
+                    media_ids: [mediaIdStr]
+                };
+                tweetMsg(param);
             }
         });
     });
 }
 
-var googleimage = require('./googleimage');
-googleimage.searchImages('euphuism');
+tweetWordOfDay();
