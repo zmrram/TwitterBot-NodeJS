@@ -1,5 +1,5 @@
 var Twit = require('twit')
-var twitAcess = require('./twitteraccess');
+var twitAcess = require('./accesskeys');
 var T = new Twit(twitAcess.tweetterKey);
 var wordnik = require('./wordnik');
 var giphy = require('./giphy');

@@ -1,6 +1,6 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xhttp = new XMLHttpRequest();
-var access = require('./twitteraccess');
+var access = require('./accesskeys');
 module.exports = {
     worldOfTheDay: function(callback) {
         xhttp.onreadystatechange = function() {
