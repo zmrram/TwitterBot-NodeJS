@@ -12,7 +12,8 @@ module.exports = {
                 callback(word, note, definition);
             }
         };
-        var url = "http://api.wordnik.com/v4/words.json/wordOfTheDay?date=2017-05-23&api_key=" + access.wordNikKey.api_key;
+        var today = new Date(Date.now()).toISOString().slice(0, 10);
+        var url = "http://api.wordnik.com/v4/words.json/wordOfTheDay?date=" + today + "&api_key=" + access.wordNikKey.api_key;
         xhttp.open("GET", url, true);
         xhttp.send();
     }

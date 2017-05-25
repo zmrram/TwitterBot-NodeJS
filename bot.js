@@ -1,4 +1,4 @@
-var Twit = require('twit')
+var Twit = require('twit');
 var accesskeys = require('./accesskeys');
 var T = new Twit(accesskeys.tweetterKey);
 
@@ -32,7 +32,7 @@ function getPic(word, note, definiton) {
 function getGif(url, event) {
     var name = event.source.name;
     var screenName = event.source.screen_name;
-    var msg = '@' + screenName + " Thanks for the follow " + url + " via @giphy";
+    var msg = '@' + screenName + " Thanks for the follow.\n" + url;
     var param = {
         status: msg
     };
@@ -106,4 +106,5 @@ function tweetPic(imgData64, word, note, definiton) {
 }
 
 listener();
+tweetWordOfDay();
 setInterval(tweetWordOfDay, 3600000 * 24);
