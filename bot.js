@@ -1,9 +1,6 @@
 var Twit = require('twit')
 var accesskeys = require('./accesskeys');
 var T = new Twit(accesskeys.tweetterKey);
-var wordnik = require('./wordnik');
-var giphy = require('./giphy');
-var fs = require('fs');
 
 // function searchTweet() {
 //     var param = {
@@ -22,6 +19,7 @@ var fs = require('fs');
 // };
 
 function tweetWordOfDay() {
+    var wordnik = require('./wordnik');
     console.log("tweeting word of the day.");
     wordnik.worldOfTheDay(getPic);
 }
@@ -46,6 +44,7 @@ function tweetMsg(param) {
 }
 
 function followResponse(event) {
+    var giphy = require('./giphy');
     var name = event.source.name;
     console.log(name + ' followed.')
     giphy.randomWelcomeGif(getGif, event);
@@ -53,7 +52,7 @@ function followResponse(event) {
 
 function tweetYelp(tweet, restaurant) {
     var param = {
-        status: '@' + tweet.toUser + ' ' + restaurant.name + " is a good place to eat " + tweet.term + "\n" + restaurant.url
+        status: '@' + tweet.toUser + ' ' + restaurant.name + " is a good place to eat" + tweet.term + "\n" + restaurant.url
     }
     tweetMsg(param);
 }
@@ -70,7 +69,7 @@ function replyResponse(event) {
         };
         yelp.searchYelp(tweet, tweetYelp);
     } else {
-        if (user.screen_name !== '@nodetwibt') {
+        if (event.user.screen_name !== 'nodetwibt') {
             var msg = 'Hi, @' + event.user.screen_name + " use this format ['@'nodetwibt ramen] to get the full experience, remember to enable location :)";
             var param = {
                 status: msg
