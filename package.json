@@ -20,6 +20,7 @@
   "dependencies": {
     "google-images": "^2.1.0",
     "twit": "^2.2.5",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "yelp": "^1.0.2"
   }
 }
