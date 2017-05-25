@@ -51,10 +51,17 @@ function followResponse(event) {
     giphy.randomWelcomeGif(getGif, event);
 }
 
+function replyResponse(event) {
+    var text = event.text;
+    var screenName = event.user.screen_name;
+    console.log(text + " from " + screenName);
+}
+
 function listener() {
     console.log("Event listerner started...")
     var stream = T.stream('user')
     stream.on('follow', followResponse)
+    stream.on('tweet', replyResponse);
 }
 
 function tweetPic(imgData64, word, note, definiton) {
@@ -76,17 +83,5 @@ function tweetPic(imgData64, word, note, definiton) {
     });
 }
 
-function searchYelp() {
-    var Yelp = require('yelp');
-    var yelp = new Yelp(accesskeys.yelp_API);
-    yelp.search({ term: 'food', location: 'Montreal' })
-        .then(function(data) {
-            console.log(data);
-        })
-        .catch(function(err) {
-            console.error(err);
-        });
-}
-searchYelp();
-// listener();
-// setInterval(tweetWordOfDay, 3600000 * 24);
+listener();
+setInterval(tweetWordOfDay, 3600000 * 24);
