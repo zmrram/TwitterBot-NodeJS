@@ -51,10 +51,33 @@ function followResponse(event) {
     giphy.randomWelcomeGif(getGif, event);
 }
 
+function tweetYelp(tweet, restaurant) {
+    var param = {
+        status: '@' + tweet.toUser + ' ' + restaurant.name + " is a good place to eat " + tweet.term + "\n" + restaurant.url
+    }
+    tweetMsg(param);
+}
+
 function replyResponse(event) {
-    var text = event.text;
-    var screenName = event.user.screen_name;
-    console.log(text + " from " + screenName);
+    var yelp = require('./yelp');
+    if (event.user.geo_enabled && event.place !== null) {
+        var text = event.text.replace('@nodetwibt', "");
+        var screenName = event.user.screen_name;
+        var tweet = {
+            term: text,
+            location: event.place.full_name,
+            toUser: screenName
+        };
+        yelp.searchYelp(tweet, tweetYelp);
+    } else {
+        if (user.screen_name !== '@nodetwibt') {
+            var msg = 'Hi, @' + event.user.screen_name + " use this format ['@'nodetwibt ramen] to get the full experience, remember to enable location :)";
+            var param = {
+                status: msg
+            };
+            tweetMsg(param);
+        }
+    }
 }
 
 function listener() {
